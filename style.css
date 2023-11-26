@@ -1,0 +1,97 @@
+body {
+    background-color: rgb(36, 36, 56);
+    overflow: hidden;
+}
+
+.main-title {
+    color: white;
+}
+
+.grid {
+    background-color: rgb(36, 36, 56);
+    width: 700px;
+    height: 700px;
+
+
+    /* makes the tiles stay in the grid */
+    display: flex;
+    flex-wrap: wrap;
+    
+}
+
+.settings-panel {
+    background-color: rgb(38, 38, 63);
+    width: 100%;
+    height: 690px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid white;
+    border-radius: 15px;
+}
+
+.grid div {
+    width: 140px;
+    height: 140px;
+    border: 7px solid rgb(36, 36, 56);
+    border-radius: 15px;
+    background-color: rgb(49, 49, 65);
+}
+
+.unchecked {
+    cursor: pointer;
+}
+
+.unchecked:hover {
+    background-color: rgb(61, 61, 80);
+    transform: scale(1.05);
+}
+
+.checked {
+    animation: colorFadeGem 0.6s ease forwards;
+    background-size: cover;
+}
+
+.bomb {
+    animation: colorFadeBomb 0.6s ease forwards;
+    background-size: cover;
+}
+
+.unclickable {
+    pointer-events: none;
+}
+
+
+@keyframes colorFadeGem {
+    0% {
+        background-color: rgb(49, 49, 65);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
+    100% {
+        background-image: url("./assets/gem.png");
+        background-color: rgba(47, 47, 59, 0.377);
+        opacity: 1;
+    }
+}
+
+@keyframes colorFadeBomb {
+    0% {
+        background-color: rgb(49, 49, 65);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
+    100% {
+        background-image: url("./assets/bomb.png");
+        background-color: rgba(207, 53, 22, 0.377);
+        opacity: 1;
+    }
+}
