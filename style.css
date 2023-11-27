@@ -1,6 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@1,300&display=swap');
+
 body {
     background-color: rgb(36, 36, 56);
     overflow: hidden;
+}
+
+
+*:focus {
+    outline: none !important;
 }
 
 .overlay {
@@ -33,6 +40,10 @@ body {
     text-align: center;
 }
 
+#bet {
+    width: 80%;
+}
+
 .play-btn {
     margin-top: 20%;
     padding: 20px;
@@ -43,13 +54,42 @@ body {
     outline: none;
 }
 
+
 .play-btn:hover {
     background-color: rgb(113, 187, 2);
     color: rgb(255, 255, 255);
     border: 2px solid rgb(255, 255, 255);
 }
 
+
+
+.cashout-btn {
+    margin-top: 5%;
+    padding: 20px;
+    background-color: rgb(47, 179, 255);
+    font-weight: bold;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 15px;
+    outline: none;
+    display: none;
+}
+
+.cashout-btn:hover {
+    background-color: rgb(2, 135, 187);
+    color: rgb(255, 255, 255);
+    border: 2px solid rgb(255, 255, 255);
+}
+
+
+
+
+
 .invalid {
+    color: red;
+    display: none;
+}
+
+.invalid-bet {
     color: red;
     display: none;
 }
@@ -62,8 +102,10 @@ body {
 
 
 
-.main-title {
+.main-title h1{
     color: rgb(255, 255, 255);
+    font-family: "Raleway";
+    font-size: 45px;
 }
 
 .grid {
@@ -88,6 +130,17 @@ body {
     border: 1px solid white;
     border-radius: 15px;
     color: white;
+    font-family: "Raleway";
+}
+
+#place-bet {
+    text-align: center;
+}
+
+#place-bet input {
+    outline: none;
+    font-size: 25px;
+    text-align: center;
 }
 
 .grid div {

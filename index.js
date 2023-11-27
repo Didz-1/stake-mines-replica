@@ -4,10 +4,11 @@ let board = {};
 let currentBalance = 0;
 let mines = 1;
 let diamonds = 0;
+let bet;
 
 
 
-const addTask = document.getElementById('play').addEventListener('submit', (e) => {
+const pressedPlay = document.getElementById('play').addEventListener('submit', (e) => {
     e.preventDefault();
 
     const deposit = document.getElementById("deposit");
@@ -17,18 +18,67 @@ const addTask = document.getElementById('play').addEventListener('submit', (e) =
         setBalance(parseInt(deposit.value));
         let overlay = document.querySelector(".overlay");
         overlay.style.display = "none";
+    } else if (deposit.value.trim() == "") {
+        setBalance(1000);
+        let overlay = document.querySelector(".overlay");
+        overlay.style.display = "none";
     } else {
-        
         invalid.style.display = "block";
         setTimeout(() => {
             invalid.style.display = "none";
         }, 4000);
 
     }
-    
-    
-    
+})
 
+
+
+
+///////////////
+
+const placedBet = document.getElementById('place-bet').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    bet = document.getElementById("bet");
+
+    if (typeof (parseInt(bet.value)) == "number" && parseInt(bet.value) > 0 && parseInt(bet.value) <= currentBalance) {
+        pressedPlaceBet();
+        setAllClickable();
+        let cashoutBtn = document.querySelector(".cashout-btn");
+        cashoutBtn.style.display = "inline-block";
+
+        currentBalance -= bet.value;
+        updateBalance(currentBalance);
+    } else {
+        let invalid = document.querySelector(".invalid-bet");
+        invalid.style.display = "block";
+        setTimeout(() => {
+            invalid.style.display = "none";
+        }, 2000);
+    }
+
+    
+})
+
+
+const pressedCashout = document.querySelector(".cashout-btn").addEventListener('click', (e) => {
+    e.preventDefault();
+    setAllUnclickable();
+
+    //calc profits
+    // const newBalance = (calculateMultiplier(mines, diamonds).toFixed(2) * currentBalance).toFixed(2);
+    // const profit = (newBalance - currentBalance);
+    // updateBalance(newBalance);
+    // updateMultiplier(1);
+    // resetGame();
+    // console.log(currentBalance);
+
+    const profit = (calculateMultiplier(mines, diamonds).toFixed(2) * bet.value);
+    const newBalance = parseFloat(currentBalance) + parseFloat(profit);
+    updateBalance(newBalance);
+    updateMultiplier(1);
+    resetGame();
+    
 
 })
 
@@ -48,9 +98,8 @@ function startGame() {
             board[`${r.toString()}-${c.toString()}`] = false;
         }
     }
-    console.log(board);
 
-
+    setAllUnclickable();
     setMultiplier(1);
 
 }
@@ -80,7 +129,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     let gemSound = new Audio("./assets/bomb.mp3");
                     gemSound.play();
 
-                    
+                    let cashoutBtn = document.querySelector(".cashout-btn");
+                    cashoutBtn.style.display = "none";
 
                     e.classList.remove("unchecked");
                     e.classList.add("bomb");
@@ -91,6 +141,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         e.classList.add("unclickable");
                     })
                     updateMultiplier(0);
+                    updateBalance(currentBalance);
+                    hitBomb();
                 } else {
                     let gemSound = new Audio("./assets/gem.mp3");
                     gemSound.play();
@@ -158,10 +210,69 @@ function setBalance(balance) {
     walletBalance.classList.add("balance-num");
     walletBalance.textContent = `Balance: £${balance}`;
     wallet.appendChild(walletBalance);
+    currentBalance = balance;
 }
 
 //update balance
-function updatebalance(balance) {
-    let currentBalance = document.querySelector(".balance-num");
-    currentBalance.textContent = `Balance: £${balance}`; 
+function updateBalance(balance) {
+    let currentBalanceText = document.querySelector(".balance-num");
+    currentBalanceText.textContent = `Balance: £${balance.toFixed(2)}`;
+    currentBalance = balance.toFixed(2);
+}
+
+
+function setAllUnclickable() {
+    let allTiles = document.querySelectorAll(".tile");
+    allTiles.forEach((e) => {
+        e.classList.add("unclickable");
+    })
+}
+
+
+function setAllClickable() {
+    let allTiles = document.querySelectorAll(".tile");
+    allTiles.forEach((e) => {
+        e.classList.remove("unclickable");
+    })
+}
+
+
+function resetGame() {
+    let allTiles = document.querySelectorAll(".tile");
+    allTiles.forEach((e) => {
+        e.classList = ("unchecked tile unclickable");
+    })
+
+    //set board to false then assign bomb
+    Object.keys(board).forEach(v => board[v] = false)
+    assignBomb(getRandomInt(5), getRandomInt(5))
+    mines = 1;
+    diamonds = 0;
+
+    let cashoutBtn = document.querySelector(".cashout-btn");
+    cashoutBtn.style.display = "none";
+}
+
+function hitBomb() {
+    //set board to false then assign bomb
+    Object.keys(board).forEach(v => board[v] = false)
+    assignBomb(getRandomInt(5), getRandomInt(5))
+    mines = 1;
+    diamonds = 0;
+
+    let cashoutBtn = document.querySelector(".cashout-btn");
+    cashoutBtn.style.display = "none";
+}
+
+function pressedPlaceBet() {
+    let allTiles = document.querySelectorAll(".tile");
+    allTiles.forEach((e) => {
+        e.classList = ("unchecked tile unclickable");
+    })
+
+    //set board to false then assign bomb
+    Object.keys(board).forEach(v => board[v] = false)
+    assignBomb(getRandomInt(5), getRandomInt(5))
+    mines = 1;
+    diamonds = 0;
 }
