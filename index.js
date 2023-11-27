@@ -40,8 +40,10 @@ const placedBet = document.getElementById('place-bet').addEventListener('submit'
     e.preventDefault();
 
     bet = document.getElementById("bet");
+    const onlyNum = /^[0-9]+(\.[0-9]+)?$/.test(bet.value);
+   
 
-    if (typeof (parseInt(bet.value)) == "number" && parseInt(bet.value) > 0 && parseInt(bet.value) <= currentBalance) {
+    if (typeof (parseInt(bet.value)) == "number" && (parseInt(bet.value) > 0 || parseFloat(bet.value) > 0) && parseInt(bet.value) <= currentBalance && onlyNum) {
         pressedPlaceBet();
         setAllClickable();
         let cashoutBtn = document.querySelector(".cashout-btn");
