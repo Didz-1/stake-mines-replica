@@ -7,6 +7,35 @@ let diamonds = 0;
 
 
 
+const addTask = document.getElementById('play').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const deposit = document.getElementById("deposit");
+    let invalid = document.querySelector(".invalid");
+   
+    if (typeof (parseInt(deposit.value)) == "number" && parseInt(deposit.value) > 0 && parseInt(deposit.value) <= 10000) {
+        setBalance(parseInt(deposit.value));
+        let overlay = document.querySelector(".overlay");
+        overlay.style.display = "none";
+    } else {
+        
+        invalid.style.display = "block";
+        setTimeout(() => {
+            invalid.style.display = "none";
+        }, 4000);
+
+    }
+    
+    
+    
+
+
+})
+
+
+
+
+
 
 function startGame() {
     //create the board
@@ -22,15 +51,7 @@ function startGame() {
     console.log(board);
 
 
-
-    //set balance
-    let wallet = document.querySelector(".balance");
-    let walletBalance = document.createElement("h3");
-    walletBalance.textContent = `Balance: ${currentBalance}`;
-    wallet.appendChild(walletBalance);
-
     setMultiplier(1);
-
 
 }
 startGame();
@@ -69,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     allTiles.forEach((e) => {
                         e.classList.add("unclickable");
                     })
+                    updateMultiplier(0);
                 } else {
                     let gemSound = new Audio("./assets/gem.mp3");
                     gemSound.play();
@@ -125,8 +147,21 @@ function setMultiplier(currentMultiplier) {
 //update multiplier
 function updateMultiplier(currentMultiplier) {
     let multiplier = document.querySelector(".multiplier-num");
-    multiplier.textContent = `Multiplier: x${currentMultiplier}`;
-    
+    multiplier.textContent = `Multiplier: x${currentMultiplier}`; 
 }
 
+////////////////
+//set balance
+function setBalance(balance) {
+    let wallet = document.querySelector(".balance");
+    let walletBalance = document.createElement("h3");
+    walletBalance.classList.add("balance-num");
+    walletBalance.textContent = `Balance: £${balance}`;
+    wallet.appendChild(walletBalance);
+}
 
+//update balance
+function updatebalance(balance) {
+    let currentBalance = document.querySelector(".balance-num");
+    currentBalance.textContent = `Balance: £${balance}`; 
+}
