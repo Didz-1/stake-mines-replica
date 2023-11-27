@@ -24,10 +24,11 @@ body {
     width: 100%;
     height: 690px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     border: 1px solid white;
     border-radius: 15px;
+    color: white;
 }
 
 .grid div {
