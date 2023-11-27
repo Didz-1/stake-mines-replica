@@ -5,7 +5,7 @@ let currentBalance = 0;
 let mines = 1;
 let diamonds = 0;
 let bet;
-
+let inGame = false;
 
 
 const pressedPlay = document.getElementById('play').addEventListener('submit', (e) => {
@@ -38,26 +38,29 @@ const pressedPlay = document.getElementById('play').addEventListener('submit', (
 
 const placedBet = document.getElementById('place-bet').addEventListener('submit', (e) => {
     e.preventDefault();
+    if (!inGame) {
+        inGame = true;
+        bet = document.getElementById("bet");
+        const onlyNum = /^[0-9]+(\.[0-9]+)?$/.test(bet.value);
+    
 
-    bet = document.getElementById("bet");
-    const onlyNum = /^[0-9]+(\.[0-9]+)?$/.test(bet.value);
-   
+        if (typeof (parseInt(bet.value)) == "number" && (parseInt(bet.value) > 0 || parseFloat(bet.value) > 0) && parseInt(bet.value) <= currentBalance && onlyNum) {
+            pressedPlaceBet();
+            setAllClickable();
+            let cashoutBtn = document.querySelector(".cashout-btn");
+            cashoutBtn.style.display = "inline-block";
 
-    if (typeof (parseInt(bet.value)) == "number" && (parseInt(bet.value) > 0 || parseFloat(bet.value) > 0) && parseInt(bet.value) <= currentBalance && onlyNum) {
-        pressedPlaceBet();
-        setAllClickable();
-        let cashoutBtn = document.querySelector(".cashout-btn");
-        cashoutBtn.style.display = "inline-block";
-
-        currentBalance -= bet.value;
-        updateBalance(currentBalance);
-    } else {
-        let invalid = document.querySelector(".invalid-bet");
-        invalid.style.display = "block";
-        setTimeout(() => {
-            invalid.style.display = "none";
-        }, 2000);
+            currentBalance -= bet.value;
+            updateBalance(currentBalance);
+        } else {
+            let invalid = document.querySelector(".invalid-bet");
+            invalid.style.display = "block";
+            setTimeout(() => {
+                invalid.style.display = "none";
+            }, 2000);
+        }
     }
+    
 
     
 })
@@ -66,7 +69,7 @@ const placedBet = document.getElementById('place-bet').addEventListener('submit'
 const pressedCashout = document.querySelector(".cashout-btn").addEventListener('click', (e) => {
     e.preventDefault();
     setAllUnclickable();
-
+    inGame = false;
     //calc profits
     // const newBalance = (calculateMultiplier(mines, diamonds).toFixed(2) * currentBalance).toFixed(2);
     // const profit = (newBalance - currentBalance);
